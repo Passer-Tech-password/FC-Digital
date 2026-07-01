@@ -1,0 +1,37 @@
+{
+  "name": "fc-digital-technologies",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^4.1.2",
+    "@tanstack/react-query": "^5.69.0",
+    "clsx": "^2.1.1",
+    "firebase": "^11.10.0",
+    "framer-motion": "^12.5.0",
+    "lucide-react": "^0.518.0",
+    "next": "15.2.1",
+    "next-themes": "^0.4.6",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-hook-form": "^7.55.0",
+    "tailwind-merge": "^3.2.1",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@types/react": "^19.1.15",
+    "@types/react-dom": "^19.1.9",
+    "autoprefixer": "^10.5.2",
+    "eslint": "^9.24.0",
+    "eslint-config-next": "15.2.1",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.2"
+  }
+}
