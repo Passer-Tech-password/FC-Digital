@@ -155,12 +155,12 @@ export default function AdminLoginPage() {
                   <p className="font-medium">Need help?</p>
                   <p className="text-text-tertiary text-sm">Contact our support team</p>
                 </div>
-                <Button variant="ghost" className="text-primary-500 hover:text-primary-400 gap-2" asChild>
-                  <Link href="/contact">
+                <Link href="/contact" className="text-primary-500 hover:text-primary-400 gap-2">
+                  <Button variant="ghost" className="text-primary-500 hover:text-primary-400 gap-2">
                     Get Support
                     <ArrowRight size={16} />
-                  </Link>
-                </Button>
+                  </Button>
+                </Link>
               </div>
             </div>
 
