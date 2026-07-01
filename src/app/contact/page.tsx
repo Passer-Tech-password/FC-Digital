@@ -1,12 +1,14 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, MessageCircle, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useAuth } from "@/contexts/AuthContext";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -19,14 +21,36 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 const ContactPage: React.FC = () => {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>({
+  const { db } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log("Form submitted:", data);
-    alert("Thank you for your message! We will get back to you soon.");
-    reset();
+  const onSubmit = async (data: FormData) => {
+    if (!db) return;
+    setIsSubmitting(true);
+    try {
+      await addDoc(collection(db, "messages"), {
+        ...data,
+        read: false,
+        createdAt: Timestamp.now(),
+        updatedAt: Timestamp.now(),
+      });
+      setSubmitSuccess(true);
+      reset();
+      setTimeout(() => setSubmitSuccess(false), 5000);
+    } catch (error) {
+      console.error("Error submitting message:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -37,7 +61,7 @@ const ContactPage: React.FC = () => {
           {/* Page Header */}
           <div className="text-center mb-16">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
-              Contact <span className="text-primary">Us</span>
+              Contact <span className="text-primary-500">Us</span>
             </h1>
             <p className="text-xl text-text-secondary max-w-2xl mx-auto">
               Get in touch with us for any inquiries or support.
@@ -51,7 +75,7 @@ const ContactPage: React.FC = () => {
 
               <div className="space-y-6 mb-8">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-xl bg-primary-500/10 text-primary-500 flex items-center justify-center flex-shrink-0">
                     <Phone size={24} />
                   </div>
                   <div>
@@ -62,7 +86,7 @@ const ContactPage: React.FC = () => {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-xl bg-primary-500/10 text-primary-500 flex items-center justify-center flex-shrink-0">
                     <Mail size={24} />
                   </div>
                   <div>
@@ -73,7 +97,7 @@ const ContactPage: React.FC = () => {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-xl bg-primary-500/10 text-primary-500 flex items-center justify-center flex-shrink-0">
                     <MapPin size={24} />
                   </div>
                   <div>
@@ -83,7 +107,7 @@ const ContactPage: React.FC = () => {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-xl bg-primary-500/10 text-primary-500 flex items-center justify-center flex-shrink-0">
                     <Clock size={24} />
                   </div>
                   <div>
@@ -94,12 +118,12 @@ const ContactPage: React.FC = () => {
                 </div>
               </div>
 
-              <Button size="lg" className="bg-success hover:bg-green-600 w-full">
+              <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 w-full">
                 <MessageCircle size={20} className="mr-2" /> Chat on WhatsApp
               </Button>
 
               {/* Map Placeholder */}
-              <div className="mt-8 aspect-video rounded-2xl bg-card border border-border flex items-center justify-center">
+              <div className="mt-8 aspect-video rounded-2xl bg-card-800 border border-border-100 flex items-center justify-center">
                 <div className="text-center">
                   <div className="text-6xl mb-4">📍</div>
                   <p className="text-text-secondary">Map Location</p>
@@ -108,19 +132,24 @@ const ContactPage: React.FC = () => {
             </div>
 
             {/* Contact Form */}
-            <div className="bg-card border border-border rounded-3xl p-8">
+            <div className="bg-card-800 border border-border-100 rounded-3xl p-8">
               <h2 className="text-2xl font-bold mb-6">Send Us a Message</h2>
+              {submitSuccess && (
+                <div className="mb-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm">
+                  Message sent successfully! We'll get back to you soon.
+                </div>
+              )}
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div>
                   <label className="block text-sm font-medium mb-2">Full Name</label>
                   <input
                     type="text"
                     {...register("name")}
-                    className="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-border text-white focus:border-primary focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-card-700 border border-border-100 text-white focus:border-primary-500 focus:outline-none transition-colors"
                     placeholder="Enter your full name"
                   />
                   {errors.name && (
-                    <p className="text-error text-sm mt-2">{errors.name.message}</p>
+                    <p className="text-red-400 text-sm mt-2">{errors.name.message}</p>
                   )}
                 </div>
 
@@ -129,11 +158,11 @@ const ContactPage: React.FC = () => {
                   <input
                     type="email"
                     {...register("email")}
-                    className="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-border text-white focus:border-primary focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-card-700 border border-border-100 text-white focus:border-primary-500 focus:outline-none transition-colors"
                     placeholder="Enter your email"
                   />
                   {errors.email && (
-                    <p className="text-error text-sm mt-2">{errors.email.message}</p>
+                    <p className="text-red-400 text-sm mt-2">{errors.email.message}</p>
                   )}
                 </div>
 
@@ -142,11 +171,11 @@ const ContactPage: React.FC = () => {
                   <input
                     type="tel"
                     {...register("phone")}
-                    className="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-border text-white focus:border-primary focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-card-700 border border-border-100 text-white focus:border-primary-500 focus:outline-none transition-colors"
                     placeholder="Enter your phone number"
                   />
                   {errors.phone && (
-                    <p className="text-error text-sm mt-2">{errors.phone.message}</p>
+                    <p className="text-red-400 text-sm mt-2">{errors.phone.message}</p>
                   )}
                 </div>
 
@@ -155,11 +184,11 @@ const ContactPage: React.FC = () => {
                   <input
                     type="text"
                     {...register("subject")}
-                    className="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-border text-white focus:border-primary focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-card-700 border border-border-100 text-white focus:border-primary-500 focus:outline-none transition-colors"
                     placeholder="Subject of your message"
                   />
                   {errors.subject && (
-                    <p className="text-error text-sm mt-2">{errors.subject.message}</p>
+                    <p className="text-red-400 text-sm mt-2">{errors.subject.message}</p>
                   )}
                 </div>
 
@@ -168,16 +197,28 @@ const ContactPage: React.FC = () => {
                   <textarea
                     {...register("message")}
                     rows={5}
-                    className="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-border text-white focus:border-primary focus:outline-none transition-colors resize-none"
+                    className="w-full px-4 py-3 rounded-xl bg-card-700 border border-border-100 text-white focus:border-primary-500 focus:outline-none transition-colors resize-none"
                     placeholder="Your message here..."
                   />
                   {errors.message && (
-                    <p className="text-error text-sm mt-2">{errors.message.message}</p>
+                    <p className="text-red-400 text-sm mt-2">{errors.message.message}</p>
                   )}
                 </div>
 
-                <Button type="submit" size="lg" className="w-full bg-primary hover:bg-accent">
-                  Send Message
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full bg-primary-500 hover:bg-primary-600"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <div className="flex items-center gap-2">
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Sending...
+                    </div>
+                  ) : (
+                    "Send Message"
+                  )}
                 </Button>
               </form>
             </div>

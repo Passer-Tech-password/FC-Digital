@@ -1,6 +1,6 @@
 "use client";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { User, Auth } from "firebase/auth";
+import { User, Auth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { initializeApp, getApps, FirebaseApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore, Firestore } from "firebase/firestore";
@@ -19,6 +19,7 @@ interface AuthContextType {
   loading: boolean;
   auth: Auth | undefined;
   db: Firestore | undefined;
+  signInWithGoogle: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -26,6 +27,7 @@ const AuthContext = createContext<AuthContextType>({
   loading: true,
   auth: undefined,
   db: undefined,
+  signInWithGoogle: async () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -35,6 +37,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
   const [firebaseAuth, setFirebaseAuth] = useState<Auth | undefined>();
   const [firebaseDb, setFirebaseDb] = useState<Firestore | undefined>();
+
+  const signInWithGoogle = async () => {
+    if (firebaseAuth) {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(firebaseAuth, provider);
+    }
+  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -60,7 +69,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, auth: firebaseAuth, db: firebaseDb }}>
+    <AuthContext.Provider value={{ user, loading, auth: firebaseAuth, db: firebaseDb, signInWithGoogle }}>
       {children}
     </AuthContext.Provider>
   );

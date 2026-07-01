@@ -1,10 +1,36 @@
 "use client";
-import React from "react";
-import { Users, Plus, Search } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Plus, Search, Loader2, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAuth } from "@/contexts/AuthContext";
+import { collection, getDocs } from "firebase/firestore";
 
 const UsersAdminPage: React.FC = () => {
+  const { db, user } = useAuth();
+  const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState<any[]>([]);
+
+  const fetchUsers = async () => {
+    if (!db) return;
+    try {
+      const querySnapshot = await getDocs(collection(db, "users"));
+      const usersData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setUsers(usersData);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, [db]);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -33,12 +59,30 @@ const UsersAdminPage: React.FC = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="h-64 flex items-center justify-center text-text-tertiary">
-            <div className="text-center">
-              <Users size={48} className="mx-auto mb-2" />
-              <p>Users will appear here</p>
+          {loading ? (
+            <div className="h-64 flex items-center justify-center">
+              <Loader2 className="w-8 h-8 text-primary-500 animate-spin" />
             </div>
-          </div>
+          ) : (
+            <div className="space-y-4">
+              {user && (
+                <div className="flex items-center justify-between p-4 bg-card-800/50 rounded-xl border border-border-100">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full bg-primary-500/10 text-primary-500 flex items-center justify-center">
+                      <User size={24} />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">{user.displayName || "Admin User"}</h3>
+                      <p className="text-sm text-text-secondary">{user.email}</p>
+                    </div>
+                  </div>
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-primary-500/10 text-primary-400">
+                    Admin
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
