@@ -285,7 +285,7 @@ export default function AdminLoginPage() {
 
           {/* Create Account */}
           <div className="mt-8 text-center">
-            <span className="text-text-secondary">Don't have an account? </span>
+            <span className="text-text-secondary">Do not have an account? </span>
             <a href="#" className="text-primary-500 hover:text-primary-400 font-medium">Contact Administrator</a>
           </div>
         </div>
