@@ -97,8 +97,8 @@ const Hero: React.FC = () => {
           >
               <div className="relative">
                 {/* Glowing Ring */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] border-[2px] border-gradient-to-br border-primary-500/30 rounded-full animate-spin" style={{ animationDuration: '30s' }} />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[380px] h-[380px] border-[2px] border-gradient-to-br border-primary-500/20 rounded-full animate-spin" style={{ animationDuration: '20s', animationDirection: 'reverse' }} />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] border-2 border-primary-500/30 rounded-full animate-spin" style={{ animationDuration: '30s' }} />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[380px] h-[380px] border-2 border-primary-500/20 rounded-full animate-spin" style={{ animationDuration: '20s', animationDirection: 'reverse' }} />
 
                 {/* Main Laptop Image Container */}
                 <div className="relative glass-soft rounded-3xl border border-border-100 p-8 lg:p-10 shadow-soft-xl">
