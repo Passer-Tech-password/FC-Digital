@@ -14,19 +14,6 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-let auth: Auth | undefined;
-let db: Firestore | undefined;
-if (typeof window !== "undefined") {
-  let app: FirebaseApp;
-  if (getApps().length === 0) {
-    app = initializeApp(firebaseConfig);
-  } else {
-    app = getApps()[0];
-  }
-  auth = getAuth(app);
-  db = getFirestore(app);
-}
-
 interface AuthContextType {
   user: User | null;
   loading: boolean;
@@ -46,10 +33,23 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [firebaseAuth, setFirebaseAuth] = useState<Auth | undefined>();
+  const [firebaseDb, setFirebaseDb] = useState<Firestore | undefined>();
 
   useEffect(() => {
-    if (auth) {
-      const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    if (typeof window !== "undefined") {
+      let app: FirebaseApp;
+      if (getApps().length === 0) {
+        app = initializeApp(firebaseConfig);
+      } else {
+        app = getApps()[0];
+      }
+      const authInstance = getAuth(app);
+      const dbInstance = getFirestore(app);
+      setFirebaseAuth(authInstance);
+      setFirebaseDb(dbInstance);
+
+      const unsubscribe = onAuthStateChanged(authInstance, (firebaseUser) => {
         setUser(firebaseUser);
         setLoading(false);
       });
@@ -60,7 +60,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, auth, db }}>
+    <AuthContext.Provider value={{ user, loading, auth: firebaseAuth, db: firebaseDb }}>
       {children}
     </AuthContext.Provider>
   );

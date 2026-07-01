@@ -13,6 +13,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "FC DIGITAL TECHNOLOGIES | Premium ICT Solutions",
   description: "Innovative technology services for businesses and individuals. Computer sales, repairs, networking, CCTV, software, and more.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
