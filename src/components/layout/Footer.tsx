@@ -125,8 +125,9 @@ const Footer: React.FC = () => {
                   <p className="text-xs text-text-tertiary uppercase tracking-wide mb-1">
                     Phone
                   </p>
-                  <p className="text-text-secondary">+234 803 123 4567</p>
-                  <p className="text-text-secondary">+234 901 234 5678</p>
+                  <p className="text-text-secondary">+234 813 103 9852</p>
+                    <p className="text-text-secondary">+234 906 143 6442</p>
+                    <p className="text-text-secondary">+234 703 753 5691</p>
                 </div>
               </li>
               <li className="flex items-start gap-4">
@@ -137,8 +138,7 @@ const Footer: React.FC = () => {
                   <p className="text-xs text-text-tertiary uppercase tracking-wide mb-1">
                     Email
                   </p>
-                  <p className="text-text-secondary">info@fcdigital.com</p>
-                  <p className="text-text-secondary">support@fcdigital.com</p>
+                  <p className="text-text-secondary">fcdigitaltechnologies@gmail.com</p>
                 </div>
               </li>
               <li className="flex items-start gap-4">

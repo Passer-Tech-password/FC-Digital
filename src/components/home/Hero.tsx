@@ -144,8 +144,7 @@ const Hero: React.FC = () => {
                     </div>
                     <div>
                       <p className="text-xs text-text-tertiary uppercase tracking-wide mb-0.5">Email Us</p>
-                      <p className="text-sm font-semibold">info@fcdigital.com</p>
-                      <p className="text-sm font-semibold">support@fcdigital.com</p>
+                      <p className="text-sm font-semibold">fcdigitaltechnologies@gmail.com</p>
                     </div>
                   </div>
                 </motion.div>

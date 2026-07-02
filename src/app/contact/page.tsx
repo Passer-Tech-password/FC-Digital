@@ -92,8 +92,7 @@ const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Email</h3>
-                    <p className="text-text-secondary">info@fcdigital.com</p>
-                    <p className="text-text-secondary">support@fcdigital.com</p>
+                    <p className="text-text-secondary">fcdigitaltechnologies@gmail.com</p>
                   </div>
                 </div>
 
@@ -103,7 +102,7 @@ const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Address</h3>
-                    <p className="text-text-secondary">123 Tech Plaza, Lagos, Nigeria</p>
+                    <p className="text-text-secondary">116 zika Avenue TN UZOKA PLAZA (TECON PLAZA) SHOP 20,26 & 27 Awka, Anambra State,Nigeria</p>
                   </div>
                 </div>
 
