@@ -80,8 +80,9 @@ const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Phone</h3>
-                    <p className="text-text-secondary">+234 803 123 4567</p>
-                    <p className="text-text-secondary">+234 901 234 5678</p>
+                    <p className="text-text-secondary">+234 813 103 9852</p>
+                    <p className="text-text-secondary">+234 906 143 6442</p>
+                    <p className="text-text-secondary">+234 703 753 5691</p>
                   </div>
                 </div>
 

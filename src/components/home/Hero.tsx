@@ -126,8 +126,9 @@ const Hero: React.FC = () => {
                     </div>
                     <div>
                       <p className="text-xs text-text-tertiary uppercase tracking-wide mb-0.5">Call Us</p>
-                      <p className="text-sm font-semibold">+234 803 123 4567</p>
-                      <p className="text-sm font-semibold">+234 703 987 6543</p>
+                      <p className="text-sm font-semibold">+234 813 103 9852</p>
+                      <p className="text-sm font-semibold">+234 906 143 6442</p>
+                      <p className="text-sm font-semibold">+234 703 753 5691</p>
                     </div>
                   </div>
                 </motion.div>
