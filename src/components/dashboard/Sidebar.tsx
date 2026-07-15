@@ -12,6 +12,7 @@ import {
   Users,
   Settings,
   LogOut,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -32,7 +33,12 @@ const navItems = [
   { href: "/admin/settings", icon: Settings, label: "Settings" },
 ];
 
-export const Sidebar: React.FC = () => {
+interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
   const pathname = usePathname();
   const { auth } = useAuth();
 
@@ -43,10 +49,10 @@ export const Sidebar: React.FC = () => {
     }
   };
 
-  return (
-    <div className="w-64 h-screen glass border-r border-border-100 flex flex-col">
-      <div className="p-6 border-b border-border-100">
-        <Link href="/admin" className="flex items-center gap-3">
+  const sidebarContent = (
+    <div className="w-64 h-full glass border-r border-border-100 flex flex-col">
+      <div className="p-6 border-b border-border-100 flex items-center justify-between">
+        <Link href="/admin" onClick={onClose} className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-xl gradient-primary shadow-glow-orange-sm flex items-center justify-center font-bold text-xl">
             FC
           </div>
@@ -57,15 +63,21 @@ export const Sidebar: React.FC = () => {
             </span>
           </div>
         </Link>
+        {onClose && (
+          <Button variant="ghost" size="icon" onClick={onClose} className="lg:hidden">
+            <X size={20} />
+          </Button>
+        )}
       </div>
 
-      <nav className="flex-1 p-4 space-y-2">
+      <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           return (
             <Link
               key={item.href}
               href={item.href}
+              onClick={onClose}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
                 isActive
                   ? "bg-primary-500/10 text-primary-500 border border-primary-500/20"
@@ -83,6 +95,7 @@ export const Sidebar: React.FC = () => {
         <div className="space-y-2">
           <Link
             href="/"
+            onClick={onClose}
             className="flex items-center gap-3 px-4 py-3 rounded-xl text-text-secondary hover:bg-card-700 hover:text-white transition-all"
           >
             <LayoutDashboard size={20} />
@@ -99,5 +112,29 @@ export const Sidebar: React.FC = () => {
         </div>
       </div>
     </div>
+  );
+
+  return (
+    <>
+      {/* Desktop Sidebar */}
+      <div className="hidden lg:flex">
+        {sidebarContent}
+      </div>
+
+      {/* Mobile Sidebar */}
+      {onClose && (
+        <div className={`fixed inset-y-0 left-0 z-50 lg:hidden transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
+          {sidebarContent}
+        </div>
+      )}
+
+      {/* Mobile Overlay */}
+      {isOpen && onClose && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={onClose}
+        />
+      )}
+    </>
   );
 };

@@ -173,7 +173,7 @@ export default function AdminLoginPage() {
       </div>
 
       {/* Right Section - Login Form */}
-      <div className="flex-1 flex items-center justify-center p-8 relative">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-8 relative">
         {/* Background glow */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-background-950 to-card-900" />
@@ -255,9 +255,9 @@ export default function AdminLoginPage() {
                 </div>
                 <span className="text-text-secondary text-sm">Remember me</span>
               </label>
-              <a href="#" className="text-primary-500 text-sm hover:text-primary-400 transition-colors">
+              <Link href="/admin/forgot-password" className="text-primary-500 text-sm hover:text-primary-400 transition-colors">
                 Forgot password?
-              </a>
+              </Link>
             </div>
 
             <Button

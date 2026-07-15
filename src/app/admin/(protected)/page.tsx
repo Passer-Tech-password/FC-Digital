@@ -94,15 +94,15 @@ const DashboardPage: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold mb-1">Dashboard</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-1">Dashboard</h1>
           <p className="text-text-secondary">
             Welcome back, {user?.displayName || "Admin"} 👋
           </p>
         </div>
-        <div className="flex items-center gap-4">
-          <div className="relative hidden sm:block">
+        <div className="flex items-center gap-3">
+          <div className="relative hidden md:block">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-tertiary" size={18} />
             <input
               type="text"
@@ -116,9 +116,9 @@ const DashboardPage: React.FC = () => {
           <Button variant="ghost" size="icon">
             <Moon size={20} />
           </Button>
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-300 flex items-center justify-center font-semibold">
-              {user?.displayName ? user.displayName.charAt(0) : <User size={18} />}
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-300 flex items-center justify-center font-semibold">
+              {user?.displayName ? user.displayName.charAt(0) : <User size={16} />}
             </div>
             <div className="hidden sm:block">
               <p className="text-sm font-semibold">{user?.displayName || "Admin User"}</p>
@@ -134,22 +134,22 @@ const DashboardPage: React.FC = () => {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
             {statItems.map((stat, index) => (
               <Card key={index} className="glass-soft border-border-100">
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
-                    <div className={`${stat.color} w-12 h-12 rounded-xl flex items-center justify-center`}>
-                      <stat.icon size={24} />
+                    <div className={`${stat.color} w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center`}>
+                      <stat.icon size={20} className="sm:w-6 sm:h-6" />
                     </div>
                     <span className="text-xs text-emerald-400 flex items-center gap-1">
-                      <TrendingUp size={14} /> {stat.change}
+                      <TrendingUp size={12} className="sm:w-3.5 sm:h-3.5" /> {stat.change}
                     </span>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold mb-1">{stat.value}</div>
-                  <p className="text-sm text-text-secondary">{stat.label}</p>
+                  <div className="text-2xl sm:text-3xl font-bold mb-1">{stat.value}</div>
+                  <p className="text-xs sm:text-sm text-text-secondary">{stat.label}</p>
                 </CardContent>
               </Card>
             ))}
